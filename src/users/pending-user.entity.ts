@@ -5,14 +5,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from './user.entity';
 
-export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
-
-@Entity('users')
-export class UserEntity {
+@Entity('pending_users')
+export class PendingUserEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -30,6 +26,12 @@ export class UserEntity {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role!: Role;
+
+  @Column()
+  otpHash!: string;
+
+  @Column()
+  expiresAt!: Date;
 
   @CreateDateColumn()
   createdAt!: Date;

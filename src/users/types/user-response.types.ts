@@ -9,3 +9,10 @@ export type UserResponse = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type PendingSignupResponse = {
+  id: string;
+  message: string;
+  email: string;
+  expiresAt: Date;
+};
