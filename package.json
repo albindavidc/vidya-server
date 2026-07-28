@@ -26,6 +26,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.3",
+    "argon2": "^0.45.1",
     "mongodb": "^7.5.0",
     "nestjs-zod": "^5.5.0",
     "reflect-metadata": "^0.2.2",
