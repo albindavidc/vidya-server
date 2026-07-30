@@ -3,5 +3,6 @@ export const API_ROUTES = {
     ROOT: 'auth',
     SIGNUP: 'signup',
     VERIFY_OTP: 'verify-otp',
+    LOGIN: 'login',
   },
 } as const;
