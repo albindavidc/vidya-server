@@ -7,7 +7,7 @@ import {
 } from 'src/users/interfaces/user.repository.interface';
 import { HashingService } from 'src/auth/services/hashing.service';
 import { TokenService } from 'src/auth/services/token.service';
-import { LoginResponse } from 'src/auth/types/login-response.types';
+import { Login } from 'src/auth/types/login.types';
 
 @CommandHandler(LoginCommand)
 export class LoginHandler implements ICommandHandler<LoginCommand> {
@@ -18,7 +18,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
     private readonly _tokenService: TokenService,
   ) {}
 
-  async execute(command: LoginCommand): Promise<LoginResponse> {
+  async execute(command: LoginCommand): Promise<Login> {
     const { email, password } = command.loginDto;
 
     const user = await this._userRepo.findByEmail(email);

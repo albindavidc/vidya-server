@@ -1,6 +1,6 @@
 import { Role } from 'src/users/user.entity';
 
-export type LoginResponse = {
+export type Login = {
   message: string;
   user: {
     firstName: string;
