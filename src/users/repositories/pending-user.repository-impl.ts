@@ -1,7 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { IPendingUserRepository } from './pending-user.repository.interface';
+import { IPendingUserRepository } from '../interfaces/pending-user.repository.interface';
 import { PendingUserEntity } from '../pending-user.entity';
 
 @Injectable()

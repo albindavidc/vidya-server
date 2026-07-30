@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { BrevoClient } from '@getbrevo/brevo';
+import { IMailService } from './mail.interface';
 
 @Injectable()
-export class MailService {
+export class MailService implements IMailService {
   private readonly _brevo: BrevoClient;
 
   constructor(private readonly _config: ConfigService) {
