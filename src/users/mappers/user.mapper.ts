@@ -8,7 +8,7 @@ import { PendingUserEntity } from '../pending-user.entity';
 export class UserMapper {
   toResponse(user: UserEntity): UserResponse {
     return {
-      id: user.id,
+      id: user.id.toString(),
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
@@ -22,7 +22,7 @@ export class UserMapper {
     pendingUser: PendingUserEntity,
   ): PendingSignupResponse {
     return {
-      id: pendingUser.id,
+      id: pendingUser.id.toString(),
       message: 'Signup pending. Please verify your OTP.',
       email: pendingUser.email,
       expiresAt: pendingUser.expiresAt,

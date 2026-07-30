@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MongoRepository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { IPendingUserRepository } from './pending-user.repository.interface';
 import { PendingUserEntity } from '../pending-user.entity';
@@ -8,21 +8,27 @@ import { PendingUserEntity } from '../pending-user.entity';
 export class PendingUserRepositoryImpl implements IPendingUserRepository {
   constructor(
     @InjectRepository(PendingUserEntity)
-    private readonly repo: Repository<PendingUserEntity>,
+    private readonly _repo: MongoRepository<PendingUserEntity>,
   ) {}
 
   async findByEmail(email: string): Promise<PendingUserEntity | null> {
-    return await this.repo.findOne({ where: { email } });
+    return await this._repo.findOneBy({ email });
   }
 
   async save(
     pendingUser: Partial<PendingUserEntity>,
   ): Promise<PendingUserEntity> {
-    const entity = this.repo.create(pendingUser);
-    return await this.repo.save(entity);
+    if (pendingUser.id) {
+      await this._repo.update(pendingUser.id, pendingUser);
+      return (await this.findByEmail(
+        pendingUser.email as string,
+      )) as PendingUserEntity;
+    }
+    const entity = this._repo.create(pendingUser);
+    return await this._repo.save(entity);
   }
 
   async deleteByEmail(email: string): Promise<void> {
-    await this.repo.delete({ email });
+    await this._repo.delete({ email });
   }
 }

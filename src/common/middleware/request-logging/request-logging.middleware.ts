@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 @Injectable()
 export class RequestLoggingMiddleware implements NestMiddleware {
-  private readonly logger = new Logger(RequestLoggingMiddleware.name);
+  private readonly _logger = new Logger(RequestLoggingMiddleware.name);
 
   use(req: Request, res: Response, next: () => void) {
     const { method, originalUrl } = req;
@@ -13,7 +13,9 @@ export class RequestLoggingMiddleware implements NestMiddleware {
       const { statusCode } = res;
       const duration = Date.now() - startTime;
 
-      this.logger.log(`${method} ${originalUrl} ${statusCode} - ${duration}ms`);
+      this._logger.log(
+        `${method} ${originalUrl} ${statusCode} - ${duration}ms`,
+      );
     });
 
     next();

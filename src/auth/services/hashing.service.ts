@@ -12,4 +12,13 @@ export class HashingService {
       });
     }
   }
+  async compare(data: string, encrypted: string): Promise<boolean> {
+    try {
+      return await argon2.verify(encrypted, data);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to compare hash', {
+        cause: error,
+      });
+    }
+  }
 }

@@ -2,9 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  ObjectIdColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ObjectId } from 'mongodb';
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -13,8 +14,8 @@ export enum Role {
 
 @Entity('users')
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  @ObjectIdColumn()
+  id!: ObjectId;
 
   @Column()
   firstName!: string;

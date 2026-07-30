@@ -10,7 +10,7 @@ import { Request, Response } from 'express';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
-  private readonly logger = new Logger(GlobalExceptionFilter.name);
+  private readonly _logger = new Logger(GlobalExceptionFilter.name);
 
   catch(exception: Error | HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -25,7 +25,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       ? exception.getResponse()
       : 'Internal Server Error';
 
-    this.logger.error(
+    this._logger.error(
       `${request.method} ${request.url} ${status}`,
       exception.stack,
     );

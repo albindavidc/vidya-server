@@ -21,34 +21,35 @@ import { MailService } from 'src/mail/mail.service';
 @CommandHandler(SignupCommand)
 export class SignupHandler implements ICommandHandler<SignupCommand> {
   constructor(
-    @Inject(I_USER_REPOSITORY) private readonly userRepository: IUserRepository,
+    @Inject(I_USER_REPOSITORY)
+    private readonly _userRepository: IUserRepository,
     @Inject(I_PENDING_USER_REPOSITORY)
-    private readonly pendingUserRepository: IPendingUserRepository,
-    private readonly hashingService: HashingService,
-    private readonly userMapper: UserMapper,
-    private readonly mailService: MailService,
+    private readonly _pendingUserRepository: IPendingUserRepository,
+    private readonly _hashingService: HashingService,
+    private readonly _userMapper: UserMapper,
+    private readonly _mailService: MailService,
   ) {}
 
   async execute(command: SignupCommand) {
     const { firstName, lastName, email, password, role } = command.signupDto;
 
     try {
-      const existingUser = await this.userRepository.findByEmail(email);
+      const existingUser = await this._userRepository.findByEmail(email);
       if (existingUser) {
         throw new ConflictException(
           'User already exists with this email address!',
         );
       }
 
-      const hashedPassword = await this.hashingService.hash(password);
+      const hashedPassword = await this._hashingService.hash(password);
 
       const otp = crypto.randomInt(100000, 999999).toString();
-      const otpHash = await this.hashingService.hash(otp);
+      const otpHash = await this._hashingService.hash(otp);
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-      await this.pendingUserRepository.deleteByEmail(email);
+      await this._pendingUserRepository.deleteByEmail(email);
 
-      const savedPendingUser = await this.pendingUserRepository.save({
+      const savedPendingUser = await this._pendingUserRepository.save({
         firstName,
         lastName,
         email,
@@ -59,10 +60,10 @@ export class SignupHandler implements ICommandHandler<SignupCommand> {
       });
 
       // Dispatch the OTP email!
-      await this.mailService.sendOtpEmail(email, otp);
+      await this._mailService.sendOtpEmail(email, otp);
 
       // Return the pending response without exposing the OTP directly to the client
-      return this.userMapper.toPendingSignupResponse(savedPendingUser);
+      return this._userMapper.toPendingSignupResponse(savedPendingUser);
     } catch (error) {
       if (error instanceof ConflictException) {
         throw error;

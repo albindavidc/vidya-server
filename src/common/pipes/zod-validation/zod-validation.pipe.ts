@@ -3,11 +3,11 @@ import { ZodError, ZodType } from 'zod';
 
 @Injectable()
 export class ZodValidationPipe<T> implements PipeTransform<T, T> {
-  constructor(private schema: ZodType<T>) {}
+  constructor(private _schema: ZodType<T>) {}
 
   transform(value: T): T {
     try {
-      return this.schema.parse(value);
+      return this._schema.parse(value);
     } catch (error) {
       if (error instanceof ZodError) {
         throw new BadRequestException({

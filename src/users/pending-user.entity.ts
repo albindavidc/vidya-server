@@ -2,15 +2,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  ObjectIdColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ObjectId } from 'mongodb';
 import { Role } from './user.entity';
 
 @Entity('pending_users')
 export class PendingUserEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  @ObjectIdColumn()
+  id!: ObjectId;
 
   @Column()
   firstName!: string;
