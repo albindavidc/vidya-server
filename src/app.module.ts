@@ -11,6 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailModule } from './mail/mail.module';
 import { VerifyOtpHandler } from './auth/commands/handlers/verify-otp.handler';
 import { AppController } from './app.controller';
+import { TokenService } from './auth/services/token.service';
 
 @Module({
   imports: [
@@ -32,6 +33,12 @@ import { AppController } from './app.controller';
     MailModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, HashingService, SignupHandler, VerifyOtpHandler],
+  providers: [
+    AppService,
+    HashingService,
+    SignupHandler,
+    VerifyOtpHandler,
+    TokenService,
+  ],
 })
 export class AppModule {}
