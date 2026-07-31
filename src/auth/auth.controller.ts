@@ -4,10 +4,11 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Request,
   Res,
   UsePipes,
 } from '@nestjs/common';
-import { ZodValidationPipe } from 'src/common/pipes/zod-validation/zod-validation.pipe';
+import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 import { type SignupDto, SignupSchema } from './dto/signup.schema';
 import { type VerifyOtpDto, VerifyOtpSchema } from './dto/verify-otp.schema';
 import { CommandBus } from '@nestjs/cqrs';
@@ -24,10 +25,16 @@ import {
   LoginSchema,
 } from './dto/login.schema';
 import { LoginCommand } from './commands/login.command';
-import { type Response } from 'express';
+import { type Request as ExpressRequest, type Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { type Login } from './types/login.types';
 import ms, { type StringValue } from 'ms';
+import { RefreshTokenCommand } from './commands/refresh-token.command';
+import { type IJwtPayload } from './strategies/jwt-payload.interface';
+
+interface RequestWithUser extends ExpressRequest {
+  user: IJwtPayload;
+}
 
 @Controller(API_ROUTES.AUTH.ROOT)
 export class AuthController {
@@ -59,6 +66,38 @@ export class AuthController {
   ): Promise<LoginResponseDto> {
     const result = await this._commandBus.execute<Login>(
       new LoginCommand(loginDto),
+    );
+
+    response.cookie('access_token', result.accessToken, {
+      httpOnly: true,
+      secure: this._config.get<string>('NODE_ENV') === 'production',
+      sameSite: 'strict',
+      maxAge: ms(this._config.getOrThrow<StringValue>('JWT_ACCESS_EXPIRES_IN')),
+    });
+
+    response.cookie('refresh_token', result.refreshToken, {
+      httpOnly: true,
+      secure: this._config.get<string>('NODE_ENV') === 'production',
+      sameSite: 'strict',
+      maxAge: ms(
+        this._config.getOrThrow<StringValue>('JWT_REFRESH_EXPIRES_IN'),
+      ),
+    });
+
+    return {
+      user: result.user,
+      message: result.message,
+    };
+  }
+
+  @Post(API_ROUTES.AUTH.REFRESH_TOKEN)
+  @HttpCode(HttpStatus.OK)
+  async refreshToken(
+    @Request() req: RequestWithUser,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<LoginResponseDto> {
+    const result = await this._commandBus.execute<Login>(
+      new RefreshTokenCommand(req.user),
     );
 
     response.cookie('access_token', result.accessToken, {

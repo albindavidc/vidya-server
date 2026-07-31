@@ -4,5 +4,6 @@ export const API_ROUTES = {
     SIGNUP: 'signup',
     VERIFY_OTP: 'verify-otp',
     LOGIN: 'login',
+    REFRESH_TOKEN: 'refresh',
   },
 } as const;
