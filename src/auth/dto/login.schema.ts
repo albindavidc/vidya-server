@@ -1,4 +1,4 @@
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UserResponse } from 'src/users/types/user-response.types';
 import z from 'zod';
 
 export const LoginSchema = z.object({
@@ -9,6 +9,6 @@ export const LoginSchema = z.object({
 export type LoginRequestDto = z.infer<typeof LoginSchema>;
 
 export class LoginResponseDto {
-  user: Omit<CreateUserDto, 'password'>;
+  user: UserResponse;
   message: string;
 }

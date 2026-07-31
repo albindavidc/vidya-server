@@ -7,6 +7,7 @@ import {
   I_USER_REPOSITORY,
   type IUserRepository,
 } from 'src/users/interfaces/user.repository.interface';
+import { UserMapper } from 'src/users/mappers/user.mapper';
 
 @CommandHandler(RefreshTokenCommand)
 export class RefreshTokenHandler implements ICommandHandler<RefreshTokenCommand> {
@@ -14,6 +15,7 @@ export class RefreshTokenHandler implements ICommandHandler<RefreshTokenCommand>
     @Inject(I_USER_REPOSITORY)
     private readonly _userRepo: IUserRepository,
     private readonly _tokenService: TokenService,
+    private readonly _userMapper: UserMapper,
   ) {}
 
   async execute(command: RefreshTokenCommand): Promise<Login> {
@@ -32,12 +34,7 @@ export class RefreshTokenHandler implements ICommandHandler<RefreshTokenCommand>
 
     return {
       message: 'Token refreshed successfully',
-      user: {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role,
-      },
+      user: this._userMapper.toResponse(user),
       accessToken: token.accessToken,
       refreshToken: token.refreshToken,
     };

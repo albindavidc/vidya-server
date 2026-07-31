@@ -1,13 +1,8 @@
-import { Role } from 'src/users/user.entity';
+import { UserResponse } from 'src/users/types/user-response.types';
 
 export type Login = {
   message: string;
-  user: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: Role;
-  };
+  user: UserResponse;
   accessToken: string;
   refreshToken: string;
 };

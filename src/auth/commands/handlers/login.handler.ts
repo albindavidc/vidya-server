@@ -8,6 +8,7 @@ import {
 import { HashingService } from 'src/auth/services/hashing.service';
 import { TokenService } from 'src/auth/services/token.service';
 import { Login } from 'src/auth/types/login.types';
+import { UserMapper } from 'src/users/mappers/user.mapper';
 
 @CommandHandler(LoginCommand)
 export class LoginHandler implements ICommandHandler<LoginCommand> {
@@ -16,6 +17,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
     private readonly _userRepo: IUserRepository,
     private readonly _hashingService: HashingService,
     private readonly _tokenService: TokenService,
+    private readonly _userMapper: UserMapper,
   ) {}
 
   async execute(command: LoginCommand): Promise<Login> {
@@ -39,12 +41,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
 
     return {
       message: 'Login successful',
-      user: {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role,
-      },
+      user: this._userMapper.toResponse(user),
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     };
