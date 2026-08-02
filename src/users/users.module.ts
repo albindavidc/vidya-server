@@ -1,20 +1,18 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { I_USER_REPOSITORY } from './interfaces/user.repository.interface';
-import { UserRepositoryImpl } from './repositories/user.repository-impl';
-import { I_PENDING_USER_REPOSITORY } from './interfaces/pending-user.repository.interface';
-import { PendingUserRepositoryImpl } from './repositories/pending-user.repository-impl';
+import { I_USER_REPOSITORY } from './interfaces/user.interface';
+import { UserRepositoryImpl } from './repositories/user.repository';
+import { I_PENDING_USER_REPOSITORY } from './interfaces/pending-user.interface';
+import { PendingUserRepositoryImpl } from './repositories/pending-user.repository';
 import { UserMapper } from './mappers/user.mapper';
-import { UserEntity } from './user.entity';
-import { PendingUserEntity } from './pending-user.entity';
+import { UserEntity } from './entities/user.entity';
+import { PendingUserEntity } from './entities/pending-user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity, PendingUserEntity])],
   controllers: [UsersController],
   providers: [
-    UsersService,
     UserMapper,
     {
       provide: I_USER_REPOSITORY,

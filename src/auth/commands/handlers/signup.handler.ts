@@ -1,11 +1,11 @@
 import {
   I_USER_REPOSITORY,
   type IUserRepository,
-} from 'src/users/interfaces/user.repository.interface';
+} from 'src/users/interfaces/user.interface';
 import {
   I_PENDING_USER_REPOSITORY,
   type IPendingUserRepository,
-} from 'src/users/interfaces/pending-user.repository.interface';
+} from 'src/users/interfaces/pending-user.interface';
 import * as crypto from 'crypto';
 import { ConflictException, Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';

@@ -6,10 +6,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ObjectId } from 'mongodb';
-import { Role } from './role.enum';
 
-@Entity('pending_users')
-export class PendingUserEntity {
+import { Role } from '../role.enum';
+
+@Entity('users')
+export class UserEntity {
   @ObjectIdColumn()
   id!: ObjectId;
 
@@ -27,12 +28,6 @@ export class PendingUserEntity {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role!: Role;
-
-  @Column()
-  otpHash!: string;
-
-  @Column()
-  expiresAt!: Date;
 
   @CreateDateColumn()
   createdAt!: Date;

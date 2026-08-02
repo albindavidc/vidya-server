@@ -4,11 +4,11 @@ import { BadRequestException, Inject } from '@nestjs/common';
 import {
   type IPendingUserRepository,
   I_PENDING_USER_REPOSITORY,
-} from 'src/users/interfaces/pending-user.repository.interface';
+} from 'src/users/interfaces/pending-user.interface';
 import {
   type IUserRepository,
   I_USER_REPOSITORY,
-} from 'src/users/interfaces/user.repository.interface';
+} from 'src/users/interfaces/user.interface';
 import { UserMapper } from 'src/users/mappers/user.mapper';
 import { type UserResponse } from 'src/users/types/user-response.types';
 import { HashingService } from '../../services/hashing.service';

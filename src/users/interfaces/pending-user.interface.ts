@@ -1,4 +1,4 @@
-import { PendingUserEntity } from '../pending-user.entity';
+import { PendingUserEntity } from '../entities/pending-user.entity';
 
 export const I_PENDING_USER_REPOSITORY = Symbol('IPendingUserRepository');
 

@@ -4,7 +4,7 @@ import { Inject, UnauthorizedException } from '@nestjs/common';
 import {
   I_USER_REPOSITORY,
   type IUserRepository,
-} from 'src/users/interfaces/user.repository.interface';
+} from 'src/users/interfaces/user.interface';
 import { HashingService } from 'src/auth/services/hashing.service';
 import { TokenService } from 'src/auth/services/token.service';
 import { Login } from 'src/auth/types/login.types';

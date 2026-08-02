@@ -2,8 +2,8 @@ import {
   PendingSignupResponse,
   UserResponse,
 } from '../types/user-response.types';
-import { UserEntity } from '../user.entity';
-import { PendingUserEntity } from '../pending-user.entity';
+import { UserEntity } from '../entities/user.entity';
+import { PendingUserEntity } from '../entities/pending-user.entity';
 
 export class UserMapper {
   toResponse(user: UserEntity): UserResponse {

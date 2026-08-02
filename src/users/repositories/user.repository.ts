@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { IUserRepository } from '../interfaces/user.repository.interface';
-import { UserEntity } from '../user.entity';
+import { IUserRepository } from '../interfaces/user.interface';
+import { UserEntity } from '../entities/user.entity';
 import { MongoRepository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
@@ -25,10 +25,6 @@ export class UserRepositoryImpl implements IUserRepository {
   }
 
   async save(user: Partial<UserEntity>): Promise<UserEntity> {
-    if (user.id) {
-      await this._userRepo.update(user.id, user);
-      return (await this.findById(user.id.toString())) as UserEntity;
-    }
     const entity = this._userRepo.create(user);
     return await this._userRepo.save(entity);
   }
