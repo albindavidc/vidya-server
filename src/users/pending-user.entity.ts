@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ObjectId } from 'mongodb';
-import { Role } from './user.entity';
+import { Role } from './role.enum';
 
 @Entity('pending_users')
 export class PendingUserEntity {

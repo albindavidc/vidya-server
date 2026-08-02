@@ -1,4 +1,4 @@
-import { Role } from 'src/users/user.entity';
+import { Role } from 'src/users/role.enum';
 import z from 'zod';
 
 export const SignupSchema = z.object({

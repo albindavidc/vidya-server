@@ -1,4 +1,4 @@
-import { Role } from '../user.entity';
+import { Role } from '../role.enum';
 
 export type UserResponse = {
   id: string;

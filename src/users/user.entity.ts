@@ -7,10 +7,7 @@ import {
 } from 'typeorm';
 import { ObjectId } from 'mongodb';
 
-export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
+import { Role } from './role.enum';
 
 @Entity('users')
 export class UserEntity {
