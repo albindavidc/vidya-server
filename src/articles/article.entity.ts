@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ObjectId } from 'mongodb';
-import { ArticleStatusEnum } from './article-status.enum';
+import { ArticleStatus } from './article-status.enum';
 
 @Entity('articles')
 @Index('IDX_ARTICLE_AUTHOR_STATUS', ['authorId', 'status'])
@@ -29,9 +29,9 @@ export class ArticleEntity {
 
   @Index('IDX_ARTICLE_STATUS')
   @Column({
-    default: ArticleStatusEnum.DRAFT,
+    default: ArticleStatus.DRAFT,
   })
-  status!: ArticleStatusEnum;
+  status!: ArticleStatus;
 
   @Index('IDX_ARTICLE_AUTHOR')
   @Column()

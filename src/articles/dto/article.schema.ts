@@ -1,5 +1,5 @@
 import z from 'zod';
-import { ArticleStatusEnum } from '../article-status.enum';
+import { ArticleStatus } from '../article-status.enum';
 import { PaginationParamsSchema } from 'src/common/dto/pagination.schema';
 
 export const ArticleSchema = z.object({
@@ -7,7 +7,7 @@ export const ArticleSchema = z.object({
   description: z.string().optional(),
   content: z.string().min(1, { message: 'Content is required' }),
   coverImages: z.array(z.string()).optional(),
-  status: z.nativeEnum(ArticleStatusEnum).default(ArticleStatusEnum.DRAFT),
+  status: z.nativeEnum(ArticleStatus).default(ArticleStatus.DRAFT),
   authorId: z.string().min(1, { message: 'AuthorId is required' }),
   slug: z.string().min(1, { message: 'Slug is required' }),
   viewCount: z.number().default(0),
@@ -17,7 +17,7 @@ export const UpdateArticleSchema = ArticleSchema.partial();
 
 export const GetArticleRequestSchema = z
   .object({
-    status: z.nativeEnum(ArticleStatusEnum).optional(),
+    status: z.nativeEnum(ArticleStatus).optional(),
   })
   .merge(PaginationParamsSchema);
 

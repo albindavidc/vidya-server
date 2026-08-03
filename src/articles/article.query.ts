@@ -3,7 +3,7 @@ import {
   PaginationParamsInterface,
   PaginatedResultInterface,
 } from 'src/common/common.interfaces';
-import { ArticleStatusEnum } from './article-status.enum';
+import { ArticleStatus } from './article-status.enum';
 import { ArticleResponseDto } from './dto/article-response.dto';
 
 export class ArticleQuery extends Query<
@@ -11,7 +11,7 @@ export class ArticleQuery extends Query<
 > {
   constructor(
     public readonly authorId: string,
-    public readonly status?: ArticleStatusEnum,
+    public readonly status?: ArticleStatus,
     public readonly pagination?: PaginationParamsInterface,
   ) {
     super();

@@ -1,4 +1,4 @@
-import { ArticleStatusEnum } from '../article-status.enum';
+import { ArticleStatus } from '../article-status.enum';
 
 export type ArticleResponseDto = {
   id: string;
@@ -6,7 +6,7 @@ export type ArticleResponseDto = {
   description?: string;
   content: string;
   coverImages?: string[];
-  status: ArticleStatusEnum;
+  status: ArticleStatus;
   authorId: string;
   slug: string;
   viewCount: number;
