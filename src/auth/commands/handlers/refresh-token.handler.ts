@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RefreshTokenCommand } from '../refresh-token.command';
 import { TokenService } from 'src/auth/services/token.service';
-import { Login } from 'src/auth/types/login.types';
+import { LoginResultDto } from 'src/auth/dto/login.schema';
 import { Inject, UnauthorizedException } from '@nestjs/common';
 import {
   I_USER_REPOSITORY,
@@ -18,7 +18,7 @@ export class RefreshTokenHandler implements ICommandHandler<RefreshTokenCommand>
     private readonly _userMapper: UserMapper,
   ) {}
 
-  async execute(command: RefreshTokenCommand): Promise<Login> {
+  async execute(command: RefreshTokenCommand): Promise<LoginResultDto> {
     const { userId } = command.userPayload;
 
     const user = await this._userRepo.findById(userId);

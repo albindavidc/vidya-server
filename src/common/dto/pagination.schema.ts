@@ -7,3 +7,5 @@ export const PaginationParamsSchema = z.object({
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).default('asc'),
 });
+
+export type PaginationParamsDto = z.infer<typeof PaginationParamsSchema>;

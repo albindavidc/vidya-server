@@ -12,3 +12,8 @@ export class LoginResponseDto {
   user: UserResponseDto;
   message: string;
 }
+
+export class LoginResultDto extends LoginResponseDto {
+  accessToken: string;
+  refreshToken: string;
+}

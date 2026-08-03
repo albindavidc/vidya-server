@@ -5,6 +5,7 @@ import { ArticlesRepositoryImpl } from './articles.repository';
 import { I_ARTICLES_REPOSITORY } from './interfaces/article.interface';
 import { ArticleQueryHandler } from './article-query.handler';
 import { ArticleMapper } from './mappers/article.mapper';
+import { ArticlesController } from './articles.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ArticleEntity])],
@@ -17,5 +18,6 @@ import { ArticleMapper } from './mappers/article.mapper';
     ArticleMapper,
   ],
   exports: [I_ARTICLES_REPOSITORY],
+  controllers: [ArticlesController],
 })
 export class ArticlesModule {}

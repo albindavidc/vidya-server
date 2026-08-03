@@ -7,7 +7,7 @@ import {
 } from 'src/users/interfaces/user.interface';
 import { HashingService } from 'src/auth/services/hashing.service';
 import { TokenService } from 'src/auth/services/token.service';
-import { Login } from 'src/auth/types/login.types';
+import { LoginResultDto } from 'src/auth/dto/login.schema';
 import { UserMapper } from 'src/users/mappers/user.mapper';
 
 @CommandHandler(LoginCommand)
@@ -20,7 +20,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
     private readonly _userMapper: UserMapper,
   ) {}
 
-  async execute(command: LoginCommand): Promise<Login> {
+  async execute(command: LoginCommand): Promise<LoginResultDto> {
     const { email, password } = command.loginDto;
 
     const user = await this._userRepo.findByEmail(email);

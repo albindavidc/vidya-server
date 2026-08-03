@@ -23,16 +23,12 @@ import {
   LoginSchema,
 } from './dto/login.schema';
 import { LoginCommand } from './commands/login.command';
-import { type Request as ExpressRequest, type Response } from 'express';
+import { type Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { type Login } from './types/login.types';
+import { type LoginResultDto } from './dto/login.schema';
 import ms, { type StringValue } from 'ms';
 import { RefreshTokenCommand } from './commands/refresh-token.command';
-import { type IJwtPayload } from './strategies/jwt-payload.interface';
-
-interface RequestWithUser extends ExpressRequest {
-  user: IJwtPayload;
-}
+import type { RequestWithUser } from './interfaces/auth.interfaces';
 
 @Controller(API_ROUTES.AUTH.ROOT)
 export class AuthController {
@@ -66,7 +62,7 @@ export class AuthController {
     @Body() loginDto: LoginRequestDto,
     @Res({ passthrough: true }) response: Response,
   ): Promise<LoginResponseDto> {
-    const result = await this._commandBus.execute<Login>(
+    const result = await this._commandBus.execute<LoginResultDto>(
       new LoginCommand(loginDto),
     );
 
@@ -98,7 +94,7 @@ export class AuthController {
     @Request() req: RequestWithUser,
     @Res({ passthrough: true }) response: Response,
   ): Promise<LoginResponseDto> {
-    const result = await this._commandBus.execute<Login>(
+    const result = await this._commandBus.execute<LoginResultDto>(
       new RefreshTokenCommand(req.user),
     );
 
