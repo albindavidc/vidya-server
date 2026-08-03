@@ -1,6 +1,6 @@
 import { Role } from '../role.enum';
 
-export type UserResponse = {
+export type UserResponseDto = {
   id: string;
   firstName: string;
   lastName: string;
@@ -8,11 +8,4 @@ export type UserResponse = {
   role: Role;
   createdAt: Date;
   updatedAt: Date;
-};
-
-export type PendingSignupResponse = {
-  id: string;
-  message: string;
-  email: string;
-  expiresAt: Date;
 };

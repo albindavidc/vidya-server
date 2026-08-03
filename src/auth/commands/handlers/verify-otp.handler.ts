@@ -10,7 +10,7 @@ import {
   I_USER_REPOSITORY,
 } from 'src/users/interfaces/user.interface';
 import { UserMapper } from 'src/users/mappers/user.mapper';
-import { type UserResponse } from 'src/users/types/user-response.types';
+import { type UserResponseDto } from 'src/users/dto/user-response.dto';
 import { HashingService } from '../../services/hashing.service';
 
 @CommandHandler(VerifyOtpCommand)
@@ -24,7 +24,7 @@ export class VerifyOtpHandler implements ICommandHandler<VerifyOtpCommand> {
     private readonly _hashingService: HashingService,
   ) {}
 
-  async execute(command: VerifyOtpCommand): Promise<UserResponse> {
+  async execute(command: VerifyOtpCommand): Promise<UserResponseDto> {
     const { email, otp } = command.dto;
 
     const pendingUser = await this._pendingUserRepo.findByEmail(email);

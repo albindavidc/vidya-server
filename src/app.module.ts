@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { HashingService } from './auth/services/hashing.service';
-import { AuthController } from './auth/auth.controller';
-import { SignupHandler } from './auth/commands/handlers/signup.handler';
-
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailModule } from './mail/mail.module';
-import { VerifyOtpHandler } from './auth/commands/handlers/verify-otp.handler';
 import { AppController } from './app.controller';
-import { TokenService } from './auth/services/token.service';
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { ArticlesModule } from './articles/articles.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,14 +29,10 @@ import { TokenService } from './auth/services/token.service';
     UsersModule,
     CqrsModule,
     MailModule,
+    ArticlesModule,
+    AuthModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [
-    AppService,
-    HashingService,
-    SignupHandler,
-    VerifyOtpHandler,
-    TokenService,
-  ],
+  controllers: [AppController],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule {}

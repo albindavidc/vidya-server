@@ -1,9 +1,9 @@
 import { Role } from '../role.enum';
 
-export class CreateUserDto {
-  firstName!: string;
-  lastName!: string;
-  email!: string;
-  password!: string;
-  role?: Role;
-}
+export type CreateUserDto = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: Role;
+};

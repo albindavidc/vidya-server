@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IArticlesRepository } from './articles.interface';
+import { IArticlesRepository } from './interfaces/article.interface';
 import {
   PaginationParamsInterface,
   PaginatedResultInterface,
@@ -24,7 +24,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class ArticlesRepositoryImpl implements IArticlesRepository {
   constructor(
     @InjectRepository(ArticleEntity)
-    private readonly articleRepo: MongoRepository<ArticleEntity>,
+    private readonly _articleRepo: MongoRepository<ArticleEntity>,
   ) {}
 
   async findByAuthorId(
@@ -52,7 +52,7 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
     const sortBy = pagination?.sortBy ?? 'createdAt';
     const sortOrder = pagination?.sortOrder;
 
-    const [data, total] = await this.articleRepo.findAndCount({
+    const [data, total] = await this._articleRepo.findAndCount({
       where,
       skip,
       take: limit,

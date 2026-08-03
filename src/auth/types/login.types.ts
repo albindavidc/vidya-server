@@ -1,8 +1,8 @@
-import { UserResponse } from 'src/users/types/user-response.types';
+import { UserResponseDto } from 'src/users/dto/user-response.dto';
 
 export type Login = {
   message: string;
-  user: UserResponse;
+  user: UserResponseDto;
   accessToken: string;
   refreshToken: string;
 };

@@ -14,10 +14,8 @@ import { type VerifyOtpDto, VerifyOtpSchema } from './dto/verify-otp.schema';
 import { CommandBus } from '@nestjs/cqrs';
 import { SignupCommand } from './commands/signup.command';
 import { VerifyOtpCommand } from './commands/verify-otp.command';
-import {
-  type PendingSignupResponse,
-  type UserResponse,
-} from 'src/users/types/user-response.types';
+import { type UserResponseDto } from 'src/users/dto/user-response.dto';
+import { type PendingSignupResponseDto } from 'src/users/dto/pending-signup-response.dto';
 import { API_ROUTES } from 'src/common/constants/api-routes.constant';
 import {
   type LoginRequestDto,
@@ -46,14 +44,18 @@ export class AuthController {
   @Post(API_ROUTES.AUTH.SIGNUP)
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(new ZodValidationPipe<SignupDto>(SignupSchema))
-  async signup(@Body() signupDto: SignupDto): Promise<PendingSignupResponse> {
+  async signup(
+    @Body() signupDto: SignupDto,
+  ): Promise<PendingSignupResponseDto> {
     return this._commandBus.execute(new SignupCommand(signupDto));
   }
 
   @Post(API_ROUTES.AUTH.VERIFY_OTP)
   @HttpCode(HttpStatus.OK)
   @UsePipes(new ZodValidationPipe<VerifyOtpDto>(VerifyOtpSchema))
-  async verifyOtp(@Body() verifyOtpDto: VerifyOtpDto): Promise<UserResponse> {
+  async verifyOtp(
+    @Body() verifyOtpDto: VerifyOtpDto,
+  ): Promise<UserResponseDto> {
     return this._commandBus.execute(new VerifyOtpCommand(verifyOtpDto));
   }
 

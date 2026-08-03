@@ -1,12 +1,10 @@
-import {
-  PendingSignupResponse,
-  UserResponse,
-} from '../types/user-response.types';
+import { UserResponseDto } from '../dto/user-response.dto';
+import { PendingSignupResponseDto } from '../dto/pending-signup-response.dto';
 import { UserEntity } from '../entities/user.entity';
 import { PendingUserEntity } from '../entities/pending-user.entity';
 
 export class UserMapper {
-  toResponse(user: UserEntity): UserResponse {
+  toResponse(user: UserEntity): UserResponseDto {
     return {
       id: user.id.toString(),
       firstName: user.firstName,
@@ -20,7 +18,7 @@ export class UserMapper {
 
   toPendingSignupResponse(
     pendingUser: PendingUserEntity,
-  ): PendingSignupResponse {
+  ): PendingSignupResponseDto {
     return {
       id: pendingUser.id.toString(),
       message: 'Signup pending. Please verify your OTP.',

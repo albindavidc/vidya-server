@@ -1,4 +1,4 @@
-import { UserResponse } from 'src/users/types/user-response.types';
+import { UserResponseDto } from 'src/users/dto/user-response.dto';
 import z from 'zod';
 
 export const LoginSchema = z.object({
@@ -9,6 +9,6 @@ export const LoginSchema = z.object({
 export type LoginRequestDto = z.infer<typeof LoginSchema>;
 
 export class LoginResponseDto {
-  user: UserResponse;
+  user: UserResponseDto;
   message: string;
 }
