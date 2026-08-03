@@ -11,6 +11,7 @@ export type ArticleResponseDto = {
   slug: string;
   viewCount: number;
   readTime: number;
+  deletedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 };
