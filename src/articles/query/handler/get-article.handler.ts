@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetArticle } from '../get-article';
+import { GetArticle } from '../get-article.query';
 import { ArticleResponseDto } from '../../dto/article-response.dto';
 import {
   I_ARTICLES_REPOSITORY,

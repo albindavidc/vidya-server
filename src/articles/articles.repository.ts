@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IArticlesRepository } from './interfaces/article.interface';
 import {
   PaginationParamsInterface,
@@ -8,6 +8,7 @@ import { ArticleStatus } from './article-status.enum';
 import { ArticleEntity } from './article.entity';
 import { FindOptionsWhere, FindOperator, MongoRepository } from 'typeorm';
 import { ObjectId } from 'mongodb';
+import { InjectRepository } from '@nestjs/typeorm';
 
 export interface IMongoRegex {
   $regex: string;
@@ -18,9 +19,6 @@ export type MongoWhere<T> = Omit<FindOptionsWhere<T>, keyof T> & {
   [P in keyof T]?: T[P] | FindOperator<T[P]> | IMongoRegex;
 };
 
-import { InjectRepository } from '@nestjs/typeorm';
-import { CreateArticleDto, UpdateArticleDto } from './dto/article.schema';
-
 @Injectable()
 export class ArticlesRepositoryImpl implements IArticlesRepository {
   constructor(
@@ -28,14 +26,7 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
     private readonly _articleRepo: MongoRepository<ArticleEntity>,
   ) {}
 
-  async create(
-    authorId: string,
-    data: CreateArticleDto,
-  ): Promise<ArticleEntity> {
-    const article = this._articleRepo.create({
-      ...data,
-      authorId: new ObjectId(authorId),
-    });
+  async save(article: ArticleEntity): Promise<ArticleEntity> {
     return this._articleRepo.save(article);
   }
 
@@ -45,25 +36,8 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
     });
   }
 
-  async update(
-    articleId: string,
-    data: UpdateArticleDto,
-  ): Promise<ArticleEntity> {
-    const article = await this.findById(articleId);
-    if (!article) {
-      throw new NotFoundException('Article not found');
-    }
-    await this._articleRepo.update(articleId, data);
-    return article;
-  }
-
-  async delete(articleId: string): Promise<ArticleEntity> {
-    const article = await this.findById(articleId);
-    if (!article) {
-      throw new NotFoundException('Article not found');
-    }
+  async delete(articleId: string): Promise<void> {
     await this._articleRepo.delete(articleId);
-    return article;
   }
 
   async findByAuthorId(
