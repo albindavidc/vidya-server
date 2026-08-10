@@ -5,6 +5,7 @@ import { PaginationParamsSchema } from 'src/common/dto/pagination.schema';
 export const ArticleSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   description: z.string().optional(),
+  summary: z.string().optional(),
   content: z.string().min(1, { message: 'Content is required' }),
   coverImages: z.array(z.string()).optional(),
   status: z.nativeEnum(ArticleStatus).default(ArticleStatus.DRAFT),

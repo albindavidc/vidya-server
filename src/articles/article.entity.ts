@@ -27,6 +27,9 @@ export class ArticleEntity {
   @Column()
   content!: string;
 
+  @Column({ nullable: true })
+  summary?: string;
+
   @Index('IDX_ARTICLE_STATUS')
   @Column({
     default: ArticleStatus.DRAFT,

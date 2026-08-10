@@ -4,7 +4,7 @@ import {
   PaginationParamsInterface,
   PaginatedResultInterface,
 } from 'src/common/common.interfaces';
-import { ArticleStatusEnum } from './article-status.enum';
+import { ArticleStatus } from './article-status.enum';
 import { ArticleEntity } from './article.entity';
 import { FindOptionsWhere, FindOperator, MongoRepository } from 'typeorm';
 import { ObjectId } from 'mongodb';
@@ -29,7 +29,7 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
 
   async findByAuthorId(
     authorId: string,
-    status?: ArticleStatusEnum,
+    status?: ArticleStatus,
     pagination?: PaginationParamsInterface,
   ): Promise<PaginatedResultInterface<ArticleEntity>> {
     const page = pagination?.page ?? 1;
@@ -38,8 +38,11 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
 
     const where: MongoWhere<ArticleEntity> = {
       authorId: new ObjectId(authorId),
-      status: status,
     };
+
+    if (status) {
+      where.status = status;
+    }
 
     if (pagination?.search) {
       const regexQuery: IMongoRegex = {
@@ -50,7 +53,7 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
     }
 
     const sortBy = pagination?.sortBy ?? 'createdAt';
-    const sortOrder = pagination?.sortOrder;
+    const sortOrder = pagination?.sortOrder === 'asc' ? 'ASC' : 'DESC';
 
     const [data, total] = await this._articleRepo.findAndCount({
       where,

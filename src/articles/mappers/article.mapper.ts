@@ -9,6 +9,7 @@ export class ArticleMapper {
       id: article.id.toString(),
       title: article.title,
       description: article.description,
+      summary: article.summary,
       content: article.content,
       coverImages: article.coverImages,
       status: article.status,

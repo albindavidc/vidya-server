@@ -4,6 +4,7 @@ export type ArticleResponseDto = {
   id: string;
   title: string;
   description?: string;
+  summary?: string;
   content: string;
   coverImages?: string[];
   status: ArticleStatus;
