@@ -6,4 +6,10 @@ export const API_ROUTES = {
     LOGIN: 'login',
     REFRESH_TOKEN: 'refresh',
   },
+  ARTICLES: {
+    ROOT: 'articles',
+    CREATE: '',
+    UPDATE: ':id',
+    DELETE: ':id',
+  },
 } as const;
