@@ -15,7 +15,7 @@ import {
   GetArticleRequestSchema,
 } from './dto/article.schema';
 import { QueryBus } from '@nestjs/cqrs';
-import { ArticleQuery } from './article.query';
+import { ArticleQuery } from './query/article.query';
 import type { RequestWithUser } from 'src/auth/interfaces/auth.interfaces';
 
 @Controller('articles')

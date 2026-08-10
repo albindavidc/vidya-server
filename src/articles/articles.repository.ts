@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { IArticlesRepository } from './interfaces/article.interface';
 import {
   PaginationParamsInterface,
@@ -19,6 +19,7 @@ export type MongoWhere<T> = Omit<FindOptionsWhere<T>, keyof T> & {
 };
 
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateArticleDto, UpdateArticleDto } from './dto/article.schema';
 
 @Injectable()
 export class ArticlesRepositoryImpl implements IArticlesRepository {
@@ -26,6 +27,44 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
     @InjectRepository(ArticleEntity)
     private readonly _articleRepo: MongoRepository<ArticleEntity>,
   ) {}
+
+  async create(
+    authorId: string,
+    data: CreateArticleDto,
+  ): Promise<ArticleEntity> {
+    const article = this._articleRepo.create({
+      ...data,
+      authorId: new ObjectId(authorId),
+    });
+    return this._articleRepo.save(article);
+  }
+
+  async findById(articleId: string): Promise<ArticleEntity | null> {
+    return this._articleRepo.findOne({
+      where: { _id: new ObjectId(articleId) },
+    });
+  }
+
+  async update(
+    articleId: string,
+    data: UpdateArticleDto,
+  ): Promise<ArticleEntity> {
+    const article = await this.findById(articleId);
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+    await this._articleRepo.update(articleId, data);
+    return article;
+  }
+
+  async delete(articleId: string): Promise<ArticleEntity> {
+    const article = await this.findById(articleId);
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+    await this._articleRepo.delete(articleId);
+    return article;
+  }
 
   async findByAuthorId(
     authorId: string,

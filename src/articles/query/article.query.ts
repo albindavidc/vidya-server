@@ -3,8 +3,8 @@ import {
   PaginationParamsInterface,
   PaginatedResultInterface,
 } from 'src/common/common.interfaces';
-import { ArticleStatus } from './article-status.enum';
-import { ArticleResponseDto } from './dto/article-response.dto';
+import { ArticleStatus } from '../article-status.enum';
+import { ArticleResponseDto } from '../dto/article-response.dto';
 
 export class ArticleQuery extends Query<
   PaginatedResultInterface<ArticleResponseDto>

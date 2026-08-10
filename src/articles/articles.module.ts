@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArticleEntity } from './article.entity';
 import { ArticlesRepositoryImpl } from './articles.repository';
 import { I_ARTICLES_REPOSITORY } from './interfaces/article.interface';
-import { ArticleQueryHandler } from './article-query.handler';
+import { ArticleQueryHandler } from './query/handler/article-query.handler';
 import { ArticleMapper } from './mappers/article.mapper';
 import { ArticlesController } from './articles.controller';
 
