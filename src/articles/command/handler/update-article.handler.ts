@@ -29,14 +29,12 @@ export class UpdateArticleHandler implements ICommandHandler<UpdateArticleComman
       description: data.description,
       summary: data.summary,
       content: data.content,
-      coverImages: data.coverImages,
+
       status: data.status,
       slug: data.slug,
-      viewCount: data.viewCount,
-      readTime: data.readTime,
     });
     const updatedArticle = await this._articleRepo.save(article);
 
-    return this._articleMapper.toResponseDto(updatedArticle);
+    return this._articleMapper.toResponse(updatedArticle);
   }
 }

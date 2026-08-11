@@ -12,6 +12,7 @@ import {
 import { UserMapper } from 'src/users/mappers/user.mapper';
 import { type UserResponseDto } from 'src/users/dto/user-response.dto';
 import { HashingService } from '../../services/hashing.service';
+import { UserEntity } from 'src/users/domain/user.entity';
 
 @CommandHandler(VerifyOtpCommand)
 export class VerifyOtpHandler implements ICommandHandler<VerifyOtpCommand> {
@@ -47,13 +48,16 @@ export class VerifyOtpHandler implements ICommandHandler<VerifyOtpCommand> {
       throw new BadRequestException('OTP has expired.');
     }
 
-    const newUser = await this._userRepository.save({
+    const newUserEntity = UserEntity.create({
+      id: '',
       email: pendingUser.email,
       firstName: pendingUser.firstName,
       lastName: pendingUser.lastName,
-      password: pendingUser.password,
+      hashedPassword: pendingUser.password,
       role: pendingUser.role,
     });
+
+    const newUser = await this._userRepository.save(newUserEntity);
 
     await this._pendingUserRepo.deleteByEmail(email);
 

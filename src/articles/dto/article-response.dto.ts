@@ -6,11 +6,11 @@ export type ArticleResponseDto = {
   description?: string;
   summary?: string;
   content: string;
-  coverImages?: string[];
+
   status: ArticleStatus;
   authorId: string;
   slug: string;
-  viewCount: number;
+
   readTime: number;
   deletedAt?: Date;
   createdAt: Date;

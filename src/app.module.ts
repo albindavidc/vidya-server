@@ -11,8 +11,6 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { ArticlesModule } from './articles/articles.module';
 import { AuthModule } from './auth/auth.module';
 import { RequestLoggingMiddleware } from './common/middleware/request-logging.middleware';
-import { AiService } from './src/ai.service';
-import { AiService } from './ai/ai.service';
 import { AiModule } from './ai/ai.module';
 
 @Module({
@@ -38,7 +36,7 @@ import { AiModule } from './ai/ai.module';
     AiModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }, AiService],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

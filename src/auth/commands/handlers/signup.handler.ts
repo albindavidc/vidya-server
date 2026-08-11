@@ -11,8 +11,9 @@ import { ConflictException, Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { HashingService } from 'src/auth/services/hashing.service';
 import { SignupCommand } from '../signup.command';
-import { UserMapper } from 'src/users/mappers/user.mapper';
+import { PendingUserMapper } from 'src/users/mappers/pending-user.mapper';
 import { I_MAIL_SERVICE, type IMailService } from 'src/mail/mail.interface';
+import { PendingUserEntity } from 'src/users/domain/pending-user.entity';
 
 @CommandHandler(SignupCommand)
 export class SignupHandler implements ICommandHandler<SignupCommand> {
@@ -22,7 +23,7 @@ export class SignupHandler implements ICommandHandler<SignupCommand> {
     @Inject(I_PENDING_USER_REPOSITORY)
     private readonly _pendingUserRepository: IPendingUserRepository,
     private readonly _hashingService: HashingService,
-    private readonly _userMapper: UserMapper,
+    private readonly _pendingUserMapper: PendingUserMapper,
     @Inject(I_MAIL_SERVICE)
     private readonly _mailService: IMailService,
   ) {}
@@ -45,18 +46,22 @@ export class SignupHandler implements ICommandHandler<SignupCommand> {
 
     await this._pendingUserRepository.deleteByEmail(email);
 
-    const savedPendingUser = await this._pendingUserRepository.save({
+    const pendingUserEntity = PendingUserEntity.create({
+      id: '', // Empty ID initially, will be created/ignored by MongoDB, but domain expects a string. Or use new ObjectId().toString()
       firstName,
       lastName,
       email,
-      password: hashedPassword,
+      hashedPassword,
       role,
       otpHash,
       expiresAt,
     });
 
+    const savedPendingUser =
+      await this._pendingUserRepository.save(pendingUserEntity);
+
     await this._mailService.sendOtpEmail(email, otp);
 
-    return this._userMapper.toPendingSignupResponse(savedPendingUser);
+    return this._pendingUserMapper.toResponse(savedPendingUser);
   }
 }

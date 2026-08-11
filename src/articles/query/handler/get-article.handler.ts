@@ -24,6 +24,6 @@ export class GetArticlesHandler implements IQueryHandler<GetArticle> {
       throw new NotFoundException(`Article not found`);
     }
 
-    return this._articleMapper.toResponseDto(article);
+    return this._articleMapper.toResponse(article);
   }
 }

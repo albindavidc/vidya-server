@@ -1,8 +1,8 @@
 import { LoginRequestDto } from '../dto/login.schema';
 import { Command } from '@nestjs/cqrs/dist/classes';
-import { type Login } from '../types/login.types';
+import { LoginResultDto } from '../dto/login.schema';
 
-export class LoginCommand extends Command<Login> {
+export class LoginCommand extends Command<LoginResultDto> {
   constructor(public readonly loginDto: LoginRequestDto) {
     super();
   }

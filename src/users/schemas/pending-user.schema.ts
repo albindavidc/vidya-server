@@ -9,9 +9,9 @@ import { ObjectId } from 'mongodb';
 import { Role } from '../role.enum';
 
 @Entity('pending_users')
-export class PendingUserEntity {
+export class PendingUserSchema {
   @ObjectIdColumn()
-  id!: ObjectId;
+  _id!: ObjectId;
 
   @Column()
   firstName!: string;

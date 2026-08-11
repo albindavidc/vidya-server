@@ -11,5 +11,6 @@ export const API_ROUTES = {
     CREATE: '',
     UPDATE: ':id',
     DELETE: ':id',
+    PARAM_ID: 'id',
   },
 } as const;

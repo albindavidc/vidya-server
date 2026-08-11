@@ -30,7 +30,7 @@ export class ArticleQueryHandler implements IQueryHandler<ArticleQuery> {
     return {
       ...result,
       data: result.data.map((article) =>
-        this._articleMapper.toResponseDto(article),
+        this._articleMapper.toResponse(article),
       ),
     };
   }

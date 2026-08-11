@@ -5,10 +5,12 @@ import {
   PaginatedResultInterface,
 } from 'src/common/common.interfaces';
 import { ArticleStatus } from './article-status.enum';
-import { ArticleEntity } from './article.entity';
+import { ArticleEntity } from './domain/article.entity';
+import { ArticleSchema } from './schemas/article.schema';
 import { FindOptionsWhere, FindOperator, MongoRepository } from 'typeorm';
 import { ObjectId } from 'mongodb';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ArticleMapper } from './mappers/article.mapper';
 
 export interface IMongoRegex {
   $regex: string;
@@ -22,18 +24,23 @@ export type MongoWhere<T> = Omit<FindOptionsWhere<T>, keyof T> & {
 @Injectable()
 export class ArticlesRepositoryImpl implements IArticlesRepository {
   constructor(
-    @InjectRepository(ArticleEntity)
-    private readonly _articleRepo: MongoRepository<ArticleEntity>,
+    @InjectRepository(ArticleSchema)
+    private readonly _articleRepo: MongoRepository<ArticleSchema>,
+    private readonly _articleMapper: ArticleMapper,
   ) {}
 
   async save(article: ArticleEntity): Promise<ArticleEntity> {
-    return this._articleRepo.save(article);
+    const persistenceEntity = this._articleMapper.toPersistence(article);
+    const entity = this._articleRepo.create(persistenceEntity);
+    const saved = await this._articleRepo.save(entity);
+    return this._articleMapper.toDomain(saved) as ArticleEntity;
   }
 
   async findById(articleId: string): Promise<ArticleEntity | null> {
-    return this._articleRepo.findOne({
+    const raw = await this._articleRepo.findOne({
       where: { _id: new ObjectId(articleId) },
     });
+    return this._articleMapper.toDomain(raw);
   }
 
   async delete(articleId: string): Promise<void> {
@@ -49,7 +56,7 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
     const limit = pagination?.limit ?? 10;
     const skip = (page - 1) * limit;
 
-    const where: MongoWhere<ArticleEntity> = {
+    const where: MongoWhere<ArticleSchema> = {
       authorId: new ObjectId(authorId),
     };
 
@@ -76,7 +83,7 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
     });
 
     return {
-      data,
+      data: data.map((d) => this._articleMapper.toDomain(d) as ArticleEntity),
       total,
       page,
       limit,

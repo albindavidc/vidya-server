@@ -3,7 +3,7 @@ import {
   PaginationParamsInterface,
 } from 'src/common/common.interfaces';
 import { ArticleStatus } from '../article-status.enum';
-import { ArticleEntity } from '../article.entity';
+import { ArticleEntity } from '../domain/article.entity';
 
 export const I_ARTICLES_REPOSITORY = Symbol('IArticlesRepository');
 

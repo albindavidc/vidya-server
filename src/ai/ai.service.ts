@@ -22,7 +22,7 @@ export class AiService implements IAiService {
       this.logger.log('Generating AI summary via Gemini... ');
 
       const response = await this.ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3.5-flash',
         contents: `You are an expert technical editor. Summarize the following article in to 2 to 3 concise, engagint sentences suitable for a blog preview: \n\n ${content}`,
       });
 

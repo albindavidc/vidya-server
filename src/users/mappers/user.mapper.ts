@@ -1,9 +1,42 @@
+import { Injectable } from '@nestjs/common';
+import { ObjectId } from 'mongodb';
+import { UserEntity } from '../domain/user.entity';
+import { UserSchema } from '../schemas/user.schema';
 import { UserResponseDto } from '../dto/user-response.dto';
-import { PendingSignupResponseDto } from '../dto/pending-signup-response.dto';
-import { UserEntity } from '../entities/user.entity';
-import { PendingUserEntity } from '../entities/pending-user.entity';
 
+type RawDocument<T> = Partial<T> & { _id?: ObjectId };
+
+@Injectable()
 export class UserMapper {
+  toPersistence(
+    entity: UserEntity,
+  ): Omit<UserSchema, '_id'> & { _id?: ObjectId } {
+    return {
+      _id: entity.id ? new ObjectId(entity.id) : undefined,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      email: entity.email,
+      password: entity.password,
+      role: entity.role,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    };
+  }
+
+  toDomain(raw: RawDocument<UserSchema> | null): UserEntity | null {
+    if (!raw) return null;
+    return UserEntity.fromPersistence({
+      id: raw._id ? raw._id.toString() : '',
+      firstName: raw.firstName!,
+      lastName: raw.lastName!,
+      email: raw.email!,
+      password: raw.password!,
+      role: raw.role!,
+      createdAt: raw.createdAt!,
+      updatedAt: raw.updatedAt!,
+    });
+  }
+
   toResponse(user: UserEntity): UserResponseDto {
     return {
       id: user.id.toString(),
@@ -13,17 +46,6 @@ export class UserMapper {
       role: user.role,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
-    };
-  }
-
-  toPendingSignupResponse(
-    pendingUser: PendingUserEntity,
-  ): PendingSignupResponseDto {
-    return {
-      id: pendingUser.id.toString(),
-      message: 'Signup pending. Please verify your OTP.',
-      email: pendingUser.email,
-      expiresAt: pendingUser.expiresAt,
     };
   }
 }

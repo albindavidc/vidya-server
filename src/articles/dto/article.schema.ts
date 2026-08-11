@@ -7,12 +7,18 @@ export const ArticleSchema = z.object({
   description: z.string().optional(),
   summary: z.string().optional(),
   content: z.string().min(1, { message: 'Content is required' }),
-  coverImages: z.array(z.string()).optional(),
+
   status: z.nativeEnum(ArticleStatus).default(ArticleStatus.DRAFT),
   authorId: z.string().min(1, { message: 'AuthorId is required' }),
   slug: z.string().min(1, { message: 'Slug is required' }),
-  viewCount: z.number().default(0),
+
   readTime: z.number().default(1),
+});
+
+export const CreateArticleSchema = ArticleSchema.omit({
+  authorId: true,
+}).extend({
+  slug: z.string().optional(),
 });
 export const UpdateArticleSchema = ArticleSchema.partial();
 
@@ -24,5 +30,10 @@ export const GetArticleRequestSchema = z
 
 export type GetArticleRequestDto = z.infer<typeof GetArticleRequestSchema>;
 
-export type CreateArticleDto = z.infer<typeof ArticleSchema>;
+export const AiSummaryRequestSchema = z.object({
+  content: z.string().min(1, { message: 'Content is required for AI summary' }),
+});
+export type AiSummaryRequestDto = z.infer<typeof AiSummaryRequestSchema>;
+
+export type CreateArticleDto = z.infer<typeof CreateArticleSchema>;
 export type UpdateArticleDto = z.infer<typeof UpdateArticleSchema>;

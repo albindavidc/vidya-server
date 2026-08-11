@@ -6,13 +6,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ObjectId } from 'mongodb';
-
 import { Role } from '../role.enum';
 
 @Entity('users')
-export class UserEntity {
+export class UserSchema {
   @ObjectIdColumn()
-  id!: ObjectId;
+  _id!: ObjectId;
 
   @Column()
   firstName!: string;

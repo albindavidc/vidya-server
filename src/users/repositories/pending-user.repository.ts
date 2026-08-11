@@ -6,25 +6,30 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { IPendingUserRepository } from '../interfaces/pending-user.interface';
-import { PendingUserEntity } from '../entities/pending-user.entity';
+import { PendingUserEntity } from '../domain/pending-user.entity';
+import { PendingUserSchema } from '../schemas/pending-user.schema';
+import { PendingUserMapper } from '../mappers/pending-user.mapper';
 
 @Injectable()
 export class PendingUserRepositoryImpl implements IPendingUserRepository {
   constructor(
-    @InjectRepository(PendingUserEntity)
-    private readonly _repo: MongoRepository<PendingUserEntity>,
+    @InjectRepository(PendingUserSchema)
+    private readonly _repo: MongoRepository<PendingUserSchema>,
+    private readonly _pendingUserMapper: PendingUserMapper,
   ) {}
 
   async findByEmail(email: string): Promise<PendingUserEntity | null> {
-    return await this._repo.findOneBy({ email });
+    const raw = await this._repo.findOneBy({ email });
+    return this._pendingUserMapper.toDomain(raw);
   }
 
-  async save(
-    pendingUser: Partial<PendingUserEntity>,
-  ): Promise<PendingUserEntity> {
+  async save(pendingUser: PendingUserEntity): Promise<PendingUserEntity> {
     try {
-      const entity = this._repo.create(pendingUser);
-      return await this._repo.save(entity);
+      const persistenceEntity =
+        this._pendingUserMapper.toPersistence(pendingUser);
+      const entity = this._repo.create(persistenceEntity);
+      const saved = await this._repo.save(entity);
+      return this._pendingUserMapper.toDomain(saved) as PendingUserEntity;
     } catch (error) {
       const mongoError = error as { code?: number };
       if (mongoError.code === 11000) {
