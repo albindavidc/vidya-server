@@ -48,7 +48,7 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
   }
 
   async findByAuthorId(
-    authorId: string,
+    authorId?: string,
     status?: ArticleStatus,
     pagination?: PaginationParamsInterface,
   ): Promise<PaginatedResultInterface<ArticleEntity>> {
@@ -56,9 +56,11 @@ export class ArticlesRepositoryImpl implements IArticlesRepository {
     const limit = pagination?.limit ?? 10;
     const skip = (page - 1) * limit;
 
-    const where: MongoWhere<ArticleSchema> = {
-      authorId: new ObjectId(authorId),
-    };
+    const where: MongoWhere<ArticleSchema> = {};
+
+    if (authorId) {
+      where.authorId = new ObjectId(authorId);
+    }
 
     if (status) {
       where.status = status;

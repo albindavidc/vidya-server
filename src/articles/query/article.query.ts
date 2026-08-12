@@ -10,7 +10,7 @@ export class ArticleQuery extends Query<
   PaginatedResultInterface<ArticleResponseDto>
 > {
   constructor(
-    public readonly authorId: string,
+    public readonly authorId?: string,
     public readonly status?: ArticleStatus,
     public readonly pagination?: PaginationParamsInterface,
   ) {

@@ -25,6 +25,8 @@ export const UpdateArticleSchema = ArticleSchema.partial();
 export const GetArticleRequestSchema = z
   .object({
     status: z.nativeEnum(ArticleStatus).optional(),
+    scope: z.enum(['all', 'mine']).optional(),
+    authorId: z.string().optional(),
   })
   .merge(PaginationParamsSchema);
 

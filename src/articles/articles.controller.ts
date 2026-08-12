@@ -36,6 +36,7 @@ import type { RequestWithUser } from 'src/auth/interfaces/auth.interfaces';
 import { API_ROUTES } from 'src/common/constants/api-routes.constant';
 import { AI_SERVICE_TOKEN, type IAiService } from 'src/ai/ai-service.interface';
 import { GetArticle } from './query/get-article.query';
+import { ArticleStatus } from './article-status.enum';
 
 @Controller(API_ROUTES.ARTICLES.ROOT)
 export class ArticlesController {
@@ -55,8 +56,17 @@ export class ArticlesController {
     @Request() req: RequestWithUser,
     @Query() queryDto: GetArticleRequestDto,
   ) {
+    const isMine = queryDto.scope === 'mine';
+    const targetAuthorId = isMine ? req.user.userId : queryDto.authorId;
+
+    const targetStatus = queryDto.status
+      ? queryDto.status
+      : isMine
+        ? undefined
+        : ArticleStatus.PUBLISHED;
+
     return this._queryBus.execute(
-      new ArticleQuery(req.user.userId, queryDto.status, queryDto),
+      new ArticleQuery(targetAuthorId, targetStatus, queryDto),
     );
   }
 

@@ -13,7 +13,7 @@ export interface IArticlesRepository {
 
   findById(articleId: string): Promise<ArticleEntity | null>;
   findByAuthorId(
-    authorId: string,
+    authorId?: string,
     status?: ArticleStatus,
     pagination?: PaginationParamsInterface,
   ): Promise<PaginatedResultInterface<ArticleEntity>>;
