@@ -4,6 +4,7 @@ export const API_ROUTES = {
     SIGNUP: 'signup',
     VERIFY_OTP: 'verify-otp',
     LOGIN: 'login',
+    LOGOUT: 'logout',
     REFRESH_TOKEN: 'refresh',
   },
   ARTICLES: {

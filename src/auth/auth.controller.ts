@@ -97,6 +97,24 @@ export class AuthController {
   }
 
   @Public()
+  @Post(API_ROUTES.AUTH.LOGOUT)
+  @HttpCode(HttpStatus.OK)
+  logout(@Res({ passthrough: true }) response: Response): { message: string } {
+    const isProduction = this._config.get<string>('NODE_ENV') === 'production';
+    response.clearCookie('access_token', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+    });
+    response.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'strict',
+    });
+    return { message: 'Logged out successfully' };
+  }
+
+  @Public()
   @Post(API_ROUTES.AUTH.REFRESH_TOKEN)
   @HttpCode(HttpStatus.OK)
   async refreshToken(
