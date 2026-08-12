@@ -12,8 +12,15 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.use(cookieParser());
 
+  const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'https://vidya.albindavidc.com',
+    'http://vidya.albindavidc.com',
+    'http://localhost:4200',
+  ].filter(Boolean) as string[];
+
   app.enableCors({
-    origin: 'http://localhost:4200',
+    origin: allowedOrigins,
     credentials: true,
   });
 
